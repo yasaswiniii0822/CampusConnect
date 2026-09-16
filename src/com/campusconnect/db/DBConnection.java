@@ -23,7 +23,7 @@ public class DBConnection {
 
     private static final String URL =
             "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE
-            + "?useSSL=false&serverTimezone=UTC";
+            + "?sslMode=REQUIRED&serverTimezone=UTC";
 
     static {
         try {
