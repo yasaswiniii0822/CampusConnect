@@ -1,0 +1,19 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="${pageContext.request.contextPath}/feed" class="brand"><span class="dot"></span>CampusConnect</a>
+    <div class="nav-links">
+      <a href="${pageContext.request.contextPath}/feed" class="${activePage == 'feed' ? 'active' : ''}">Home</a>
+      <a href="${pageContext.request.contextPath}/discover" class="${activePage == 'discover' ? 'active' : ''}">Discover</a>
+      <a href="${pageContext.request.contextPath}/events" class="${activePage == 'events' ? 'active' : ''}">Events</a>
+      <a href="${pageContext.request.contextPath}/profile" class="${activePage == 'profile' ? 'active' : ''}">Profile</a>
+    </div>
+    <div class="nav-right">
+      <a href="${pageContext.request.contextPath}/profile" class="avatar-bubble" style="background:${sessionScope.avatarColor != null ? sessionScope.avatarColor : '#c1502f'}">
+        <c:out value="${fn:substring(sessionScope.userName, 0, 1)}" default="?"/>
+      </a>
+      <a href="${pageContext.request.contextPath}/logout" class="btn btn-ghost btn-sm">Log out</a>
+    </div>
+  </div>
+</nav>

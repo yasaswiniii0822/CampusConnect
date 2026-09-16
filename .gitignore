@@ -1,0 +1,4 @@
+CampusConnect.war
+WebContent/WEB-INF/classes/
+*.class
+*.war
