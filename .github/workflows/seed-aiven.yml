@@ -1,0 +1,50 @@
+name: Seed Aiven MySQL
+
+on:
+  workflow_dispatch:
+
+jobs:
+  seed-database:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install MySQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+
+      - name: Prepare schema
+        run: |
+          sed \
+            -e '/DROP DATABASE IF EXISTS campusconnect;/d' \
+            -e '/CREATE DATABASE campusconnect CHARACTER SET utf8mb4;/d' \
+            -e '/USE campusconnect;/d' \
+            sql/schema.sql > /tmp/campusconnect.sql
+
+      - name: Import schema into Aiven
+        env:
+          MYSQL_PWD: ${{ secrets.AIVEN_MYSQL_PASSWORD }}
+        run: |
+          mysql \
+            --host=mysql-1b37f778-yashu822-4889.c.aivencloud.com \
+            --port=13710 \
+            --user=avnadmin \
+            --ssl-mode=REQUIRED \
+            campusconnect < /tmp/campusconnect.sql
+
+      - name: Verify tables
+        env:
+          MYSQL_PWD: ${{ secrets.AIVEN_MYSQL_PASSWORD }}
+        run: |
+          mysql \
+            --host=mysql-1b37f778-yashu822-4889.c.aivencloud.com \
+            --port=13710 \
+            --user=avnadmin \
+            --ssl-mode=REQUIRED \
+            --batch \
+            --skip-column-names \
+            -e "SHOW TABLES;" \
+            campusconnect
